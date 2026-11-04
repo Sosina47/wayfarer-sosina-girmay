@@ -7,3 +7,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       Int       @id @default(autoincrement()) @map("id")
+  name     String    @map("name")
+  reviews  Review[]
+  bookings Booking[]
+
+  @@map("users")
+}
+
+model Place {
+  id           Int        @id @default(autoincrement()) @map("id")
+  name         String     @map("name")
+  category     String     @map("category")
+  description  String     @map("description") @db.Text
+  address      String     @map("address")
+  openingHours String     @map("opening_hours")
+  imageUrl     String?    @map("image_url")
+  reviews      Review[]
+  tourSlots    TourSlot[]
+
+  @@index([category])
+  @@map("places")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement()) @map("id")
+  placeId   Int      @map("place_id")
+  userId    Int      @map("user_id")
+  rating    Int      @map("rating")
+  body      String   @map("body") @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  place Place @relation(fields: [placeId], references: [id], onDelete: Restrict)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@unique([placeId, userId], name: "placeId_userId")
+  @@map("reviews")
+}
+
+model TourSlot {
+  id          Int      @id @default(autoincrement()) @map("id")
+  placeId     Int      @map("place_id")
+  startsAt    DateTime @map("starts_at") @db.Timestamptz
+  capacity    Int      @map("capacity")
+  bookedSeats Int      @default(0) @map("booked_seats")
+
+  place    Place     @relation(fields: [placeId], references: [id], onDelete: Restrict)
+  bookings Booking[]
+
+  @@index([placeId, startsAt])
+  @@map("tour_slots")
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement()) @map("id")
+  slotId    Int      @map("slot_id")
+  userId    Int      @map("user_id")
+  seats     Int      @map("seats")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  tourSlot TourSlot @relation(fields: [slotId], references: [id], onDelete: Restrict)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([slotId])
+  @@map("bookings")
+}
