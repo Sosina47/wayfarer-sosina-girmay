@@ -115,3 +115,30 @@ $$\text{booked\_seats} = \sum(\text{booking.seats}) \quad \text{and} \quad 0 \le
 - Pre-connection guard `assertTestDatabase(testUrl, devUrl)` throws before test execution if `TEST_DATABASE_URL` is missing, equal to `DATABASE_URL`, or doesn't contain `test`.
 - `resetDatabase()` runtime-checks `SELECT current_database()` before truncating test tables.
 - Development database data is never touched by tests.
+
+---
+
+## 6. Place Discovery, Filtering, and Ranking (Slice 2)
+
+### 6.1 Request Path
+```text
+Browser -> GET /api/places?category=History&sort=top-rated
+  -> routes/places.ts
+  -> controllers/placeController.ts (parseCategory, parseSort)
+  -> services/placeService.ts
+  -> lib/ranking.ts (pure score calculation & comparators)
+  -> JSON response { places: [...] }
+```
+
+### 6.2 Efficient Aggregations
+To prevent N+1 queries when loading places:
+1. `prisma.review.aggregate` fetches the overall system review count and average in a single SQL query to establish the global prior $C$.
+2. `prisma.review.groupBy` retrieves counts and averages grouped by `placeId` in a single SQL statement.
+3. Review stats are indexed in an in-memory hash map for $O(1)$ lookups when assembling the ranked list.
+
+### 6.3 Ranking Algorithm
+Pure calculation in `server/src/lib/ranking.ts`:
+- **Formula**: `score = (v / (v + 10)) * R + (10 / (v + 10)) * C`
+- **Ties broken deterministically**: `score` (desc) $\rightarrow$ `reviewCount` (desc) $\rightarrow$ `name` (asc).
+- **Invariance**: $C$ is computed globally so category filters never skew a place's prior or relative score.
+

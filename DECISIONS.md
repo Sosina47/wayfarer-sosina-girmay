@@ -83,4 +83,30 @@ The following table records the project assumptions established in Section 2.3 o
 - **Decision**: Physical separation into `wayfarer` (development) and `wayfarer_test` (tests) with pre-connection and runtime assertions.
 - **Why**: Tests truncate tables. A mandatory `TEST_DATABASE_URL` checked before connection and runtime verification of `SELECT current_database()` completely prevents developer data loss.
 
+---
+
+## 4. Place Discovery, Filtering & Bayesian Ranking (Slice 2)
+
+### 4.1 Ranking Formula and Parameter Selection
+- **Formula**:
+  $$\text{score} = \left(\frac{v}{v + m}\right) \cdot R + \left(\frac{m}{v + m}\right) \cdot C$$
+  where $v$ is the venue's review count, $R$ is its average rating, $C$ is the global mean rating across all reviews, and $m = 10$.
+- **Why $m = 10$**:
+  A venue must accumulate 10 reviews before its own average carries equal weight (50%) to the prior. With $v = 1$, the single review contributes only $\sim 9\%$ of the weight, preventing newly opened venues with a single 5★ review from leaping ahead of established, well-reviewed venues.
+- **Fallback for Zero Reviews**:
+  When a venue has no reviews ($v = 0$), its score equals $C$. If the entire database has 0 reviews, $C$ falls back to the scale midpoint $\text{NEUTRAL\_PRIOR\_RATING} = 3.0$.
+- **Where it breaks**:
+  - Cold-start penalty: Truly exceptional new venues are pulled toward the average until they accumulate enough reviews.
+  - Review spam: The formula does not incorporate recency or fraud detection.
+  - Dominated by prior in small samples: Because the assignment caps live users at 3, demo scores remain clustered around $C$. The large-sample case is verified in unit tests.
+
+### 4.2 Global Mean Scope Invariance
+- **Decision**: Global average $C$ is calculated across **all** reviews in the database, not restricted to the filtered category.
+- **Why**: Ensures that applying a category filter does not recalculate $C$ on a noisy, smaller sample or cause a place's ranking score to shift when filtered. This property is strictly verified by integration tests.
+
+### 4.3 Sorting Parameter Contract
+- **Decision**: Standardize API sorting parameter on `sort=top-rated` (default) and `sort=name`.
+- **Why**: Replaces preliminary `sort=top` references with the user-agreed contract `top-rated` and returns deterministic ordering via tie-breaking comparators (score descending $\rightarrow$ review count descending $\rightarrow$ name ascending).
+
+
 
