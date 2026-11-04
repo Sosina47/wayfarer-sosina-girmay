@@ -142,3 +142,22 @@ Pure calculation in `server/src/lib/ranking.ts`:
 - **Ties broken deterministically**: `score` (desc) $\rightarrow$ `reviewCount` (desc) $\rightarrow$ `name` (asc).
 - **Invariance**: $C$ is computed globally so category filters never skew a place's prior or relative score.
 
+
+---
+
+## 7. Place Details, Reviews & Acting-as Identity (Slice 3)
+
+### 7.1 Endpoints
+- `GET /api/users`: Returns seeded users `[{ id: 1, name: "Ana" }, ...]`.
+- `GET /api/places/:id`: Returns place metadata, average rating, review count, reviews array (newest first), upcoming tour slots, and `myReview` for the acting user.
+- `PUT /api/places/:id/review`: Requires `X-User-Id`. Creates or updates the acting user's review for the place.
+
+### 7.2 Acting-As Header & Scoped Middleware
+- Header: `X-User-Id: <integer>`.
+- `attachUser`: Checks `X-User-Id` if present, validates against PostgreSQL, and sets `req.user`. Non-numeric or unknown ID returns 401 `INVALID_USER`.
+- `requireUser`: Enforces that `req.user` is present; returns 401 `USER_REQUIRED` if absent.
+
+### 7.3 Frontend Components & Architecture
+- `CurrentUserContext`: Restores acting user from `localStorage`, provides user state, and configures `api.ts` to attach `X-User-Id` to all API requests. Changing user immediately re-renders active pages.
+- `UserSwitcher`: Accessible `<select>` dropdown in `AppHeader` to switch between Ana, Bruno, and Carla.
+- `PlaceDetailsPage` (`/places/:id`): Hero image/placeholder, address, hours, rating summary, tour slots preview, review form with character counter, and reviews list with `"You"` badges.

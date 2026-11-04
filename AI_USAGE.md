@@ -86,3 +86,22 @@ This document transparently records the use of AI tools during the development o
 
 
 
+
+---
+
+## 5. Slice 3: Place Details, Reviews & Identity
+
+### 5.1 Clarifications & Implementation Highlights
+- **Scoped Identity Middleware**: In accordance with user guidance, `attachUser` was applied selectively rather than globally:
+  - `GET /api/places/:id`: Optional identity, returning `myReview` if valid header provided; returning 401 `INVALID_USER` if invalid header supplied.
+  - `PUT /api/places/:id/review`: Mandatory identity via `[attachUser, requireUser]`, rejecting missing header with 401 `USER_REQUIRED` and non-existent users with 401 `INVALID_USER`.
+  - `GET /api/users` and `GET /api/health`: Unencumbered by identity.
+- **Prisma Upsert Verification**: Avoided speculative assumptions or fallbacks. Executed a dedicated query logging probe confirming that Prisma 6 emits a single atomic PostgreSQL `INSERT ... ON CONFLICT ("place_id", "user_id") DO UPDATE` statement.
+- **Review Validation**: Trimmed review body and verified $1 \le \text{length} \le 500$ characters. Strict integer rating $[1, 5]$.
+- **Read-Only Tour Slots Preview**: Embedded tour slot schedule and availability information without mutations (reserved for Slice 4).
+
+### 5.2 Verification & Test Results
+- **Full Backend Suite**: 49 tests passing across 6 test files (`npm test -w server`).
+- **Review & Detail Tests**: 16 dedicated integration tests in `tests/integration/reviews.test.ts` on `wayfarer_test`.
+- **Database Safeguard**: Development database `wayfarer` audited before and after test execution (`users: 3, places: 10, reviews: 23, slots: 5, bookings: 6`).
+- **Frontend Verification**: TypeScript passed (`npm run typecheck`) and Vite production build passed (`npm run build`).

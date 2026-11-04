@@ -7,10 +7,56 @@ import {
   PlaceForRanking
 } from '../lib/ranking.js';
 import { SortOption } from '../lib/validation.js';
+import { NotFoundError } from '../lib/errors.js';
 
 export interface ListPlacesOptions {
   category?: string;
   sort?: SortOption;
+}
+
+export interface ReviewDetail {
+  id: number;
+  rating: number;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface TourSlotDetail {
+  id: number;
+  startsAt: string;
+  capacity: number;
+  bookedSeats: number;
+  seatsLeft: number;
+}
+
+export interface MyReviewDetail {
+  id: number;
+  rating: number;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PlaceDetailsResult {
+  place: {
+    id: number;
+    name: string;
+    category: string;
+    description: string;
+    address: string;
+    openingHours: string;
+    imageUrl: string | null;
+    reviewCount: number;
+    averageRating: number | null;
+  };
+  reviews: ReviewDetail[];
+  tourSlots: TourSlotDetail[];
+  myReview: MyReviewDetail | null;
 }
 
 export class PlaceService {
@@ -102,6 +148,101 @@ export class PlaceService {
     });
 
     return results.map(r => r.category);
+  }
+
+  /**
+   * Retrieves detailed place information, reviews, tour slots, and acting user's review.
+   */
+  async getPlaceDetails(placeId: number, actingUserId?: number): Promise<PlaceDetailsResult> {
+    const place = await prisma.place.findUnique({
+      where: { id: placeId },
+      include: {
+        reviews: {
+          select: {
+            id: true,
+            rating: true,
+            body: true,
+            createdAt: true,
+            updatedAt: true,
+            user: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          },
+          orderBy: { createdAt: 'desc' }
+        },
+        tourSlots: {
+          select: {
+            id: true,
+            startsAt: true,
+            capacity: true,
+            bookedSeats: true
+          },
+          orderBy: { startsAt: 'asc' }
+        }
+      }
+    });
+
+    if (!place) {
+      throw new NotFoundError('Place not found.');
+    }
+
+    const reviewCount = place.reviews.length;
+    let averageRating: number | null = null;
+    if (reviewCount > 0) {
+      const sum = place.reviews.reduce((acc, r) => acc + r.rating, 0);
+      averageRating = Number((sum / reviewCount).toFixed(2));
+    }
+
+    const formattedReviews: ReviewDetail[] = place.reviews.map(r => ({
+      id: r.id,
+      rating: r.rating,
+      body: r.body,
+      createdAt: r.createdAt.toISOString(),
+      updatedAt: r.updatedAt.toISOString(),
+      user: r.user
+    }));
+
+    const formattedSlots: TourSlotDetail[] = place.tourSlots.map(s => ({
+      id: s.id,
+      startsAt: s.startsAt.toISOString(),
+      capacity: s.capacity,
+      bookedSeats: s.bookedSeats,
+      seatsLeft: Math.max(0, s.capacity - s.bookedSeats)
+    }));
+
+    let myReview: MyReviewDetail | null = null;
+    if (actingUserId !== undefined) {
+      const userReview = place.reviews.find(r => r.user.id === actingUserId);
+      if (userReview) {
+        myReview = {
+          id: userReview.id,
+          rating: userReview.rating,
+          body: userReview.body,
+          createdAt: userReview.createdAt.toISOString(),
+          updatedAt: userReview.updatedAt.toISOString()
+        };
+      }
+    }
+
+    return {
+      place: {
+        id: place.id,
+        name: place.name,
+        category: place.category,
+        description: place.description,
+        address: place.address,
+        openingHours: place.openingHours,
+        imageUrl: place.imageUrl,
+        reviewCount,
+        averageRating
+      },
+      reviews: formattedReviews,
+      tourSlots: formattedSlots,
+      myReview
+    };
   }
 }
 

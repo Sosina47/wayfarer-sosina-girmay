@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { placeService } from '../services/placeService.js';
-import { parseCategory, parseSort } from '../lib/validation.js';
+import { parseCategory, parseId, parseSort } from '../lib/validation.js';
 
 export class PlaceController {
   async getPlaces(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -19,6 +19,18 @@ export class PlaceController {
     try {
       const categories = await placeService.listCategories();
       res.status(200).json({ categories });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getPlaceById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const placeId = parseId(req.params.id, 'place ID');
+      const actingUserId = req.user?.id;
+
+      const details = await placeService.getPlaceDetails(placeId, actingUserId);
+      res.status(200).json(details);
     } catch (err) {
       next(err);
     }
