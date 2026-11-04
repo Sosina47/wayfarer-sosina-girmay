@@ -1,0 +1,32 @@
+export class AppError extends Error {
+  public readonly statusCode: number;
+  public readonly code: string;
+  public readonly details?: unknown;
+
+  constructor(statusCode: number, code: string, message: string, details?: unknown) {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+    this.code = code;
+    this.details = details;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+export class ValidationError extends AppError {
+  constructor(message: string, details?: unknown) {
+    super(400, 'VALIDATION_ERROR', message, details);
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(message = 'Resource not found') {
+    super(404, 'NOT_FOUND', message);
+  }
+}
+
+export class UnauthorizedError extends AppError {
+  constructor(code = 'UNAUTHENTICATED', message = 'Authentication required') {
+    super(401, code, message);
+  }
+}
