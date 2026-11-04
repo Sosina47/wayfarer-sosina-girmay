@@ -39,3 +39,52 @@ export function parseCategory(val: unknown): string | undefined {
   const trimmed = val.trim();
   return trimmed.length > 0 ? trimmed : undefined;
 }
+
+/**
+ * Validates that an ID parameter is a positive integer.
+ */
+export function parseId(val: unknown, paramName = 'ID'): number {
+  if (val === undefined || val === null) {
+    throw new ValidationError(`Invalid ${paramName}. Expected a positive integer.`);
+  }
+
+  const str = String(val).trim();
+  if (!/^\d+$/.test(str)) {
+    throw new ValidationError(`Invalid ${paramName}. Expected a positive integer.`);
+  }
+
+  const num = parseInt(str, 10);
+  if (num <= 0 || !Number.isSafeInteger(num)) {
+    throw new ValidationError(`Invalid ${paramName}. Expected a positive integer.`);
+  }
+
+  return num;
+}
+
+/**
+ * Validates rating as an integer between 1 and 5.
+ * Rejects floats and numeric strings.
+ */
+export function parseRating(val: unknown): number {
+  if (typeof val !== 'number' || !Number.isInteger(val) || val < 1 || val > 5) {
+    throw new ValidationError('Rating must be an integer between 1 and 5.');
+  }
+
+  return val;
+}
+
+/**
+ * Validates and trims the review body according to agreed SRS length requirements (1-500 characters).
+ */
+export function parseReviewBody(val: unknown): string {
+  if (typeof val !== 'string') {
+    throw new ValidationError('Review body must be a string.');
+  }
+
+  const trimmed = val.trim();
+  if (trimmed.length < 1 || trimmed.length > 500) {
+    throw new ValidationError('Review body must be between 1 and 500 characters.');
+  }
+
+  return trimmed;
+}
