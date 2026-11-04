@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { UserSwitcher } from './UserSwitcher.js';
 
 export const AppHeader: React.FC = () => {
   return (
@@ -14,10 +15,11 @@ export const AppHeader: React.FC = () => {
           </span>
         </Link>
 
-        <div className="flex items-center gap-3">
-          <span className="text-xs px-2.5 py-1 rounded bg-[#25201C] border border-[#3A332C] text-[#9BAE7F] font-medium tracking-wide">
+        <div className="flex items-center gap-4">
+          <span className="hidden md:inline-block text-xs px-2.5 py-1 rounded bg-[#25201C] border border-[#3A332C] text-[#9BAE7F] font-medium tracking-wide">
             Lisbon Edition
           </span>
+          <UserSwitcher />
         </div>
       </div>
     </header>
