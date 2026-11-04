@@ -36,3 +36,19 @@ This document transparently records the use of AI tools during the development o
 - Setting up Express 5, React 19, Tailwind CSS v4, and Prisma 6.
 - Implementing active PostgreSQL connectivity checking via `GET /api/health`.
 
+---
+
+## 3. Slice 1: Database Foundation & Seed Data
+
+### 3.1 Clarifications Incorporated
+- User directed strict seed safety (verifying database name is `wayfarer` before truncation, preventing seed execution on `wayfarer_test`).
+- Synchronized PostgreSQL sequence `users_id_seq` after fixed IDs (1–3) are seeded to prevent primary key collisions on auto-increments.
+- Formulated `assertTestDatabase` guard and `assertSlotConsistent` invariant auditor.
+- Documented accurately that Prisma `@updatedAt` is an application-level query engine behavior, not a PostgreSQL trigger.
+
+### 3.2 Verification & Troubleshooting Note
+- **Issue**: In `vitest.config.ts`, setting `process.env.DATABASE_URL = testUrl` at the top level caused `globalSetup.ts` to see `DATABASE_URL` already mutated to `TEST_DATABASE_URL`, triggering `assertTestDatabase` to correctly catch that dev and test URLs were identical and abort execution.
+- **Fix**: Retained the original development database URL in `DEV_DATABASE_URL` so that `globalSetup.ts` can reliably assert separation before worker process environment overrides occur.
+- **Evidence**: Executed `npm test -w server` (all 14 tests passed on `wayfarer_test`), followed by auditing `wayfarer` development database row counts (`users: 3, places: 10, reviews: 23, slots: 5, bookings: 6`), proving zero data loss or test leakage.
+
+

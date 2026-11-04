@@ -52,3 +52,35 @@ The following table records the project assumptions established in Section 2.3 o
 | 13 | Demo reviews | All reviews are explicitly labelled synthetic demonstration data. | Ethical clarity without altering schema. |
 | 14 | Test database configuration | `TEST_DATABASE_URL` is required and must target `wayfarer_test`. | Absolute isolation prevents accidental developer data loss. |
 
+---
+
+## 3. Database Foundation & Seed Data (Slice 1)
+
+### 3.1 Composite Unique Constraint for Review Uniqueness
+- **Decision**: Define `@@unique([placeId, userId])` in `schema.prisma` generating `UNIQUE (place_id, user_id)` in PostgreSQL.
+- **Why**: Guarantees one review per user per place at the database engine level. In Slice 3, review creation/update targets this constraint via Prisma `upsert`. Concurrency safety will be verified with integration tests rather than assuming unverified library behavior.
+- **Alternatives Rejected**:
+  - *Application-level check (find then insert)*: Vulnerable to race conditions where two simultaneous submissions by the same user both see no existing review and attempt inserts.
+
+### 3.2 Counter `bookedSeats` vs. Derived Sum
+- **Decision**: Maintain a denormalized `bookedSeats` counter on `TourSlot` with an invariant `bookedSeats == SUM(booking.seats)`, enforced by single write path, interactive transaction, and a PostgreSQL `CHECK (booked_seats BETWEEN 0 AND capacity)`.
+- **Why**: Check-and-reserve can be accomplished in a single atomic SQL statement (`UPDATE tour_slots SET booked_seats = booked_seats + $n WHERE id = $id AND booked_seats + $n <= capacity`), avoiding row-lock holding across multiple statements.
+- **Alternatives Rejected**:
+  - *Deriving seats from SUM(bookings.seats)*: Requires `SELECT ... FOR UPDATE`, summing rows, comparing in application code, and inserting. Correct, but more moving parts and lock held across three statements.
+
+### 3.3 Hand-Edited CHECK Constraints
+- **Decision**: Append named `CHECK` constraints to Prisma migration SQL (`rating BETWEEN 1 AND 5`, `capacity > 0`, `booked_seats BETWEEN 0 AND capacity`, `seats > 0`).
+- **Why**: Serves as the database's independent defense: even if application validation contains a flaw, PostgreSQL refuses invalid data.
+
+### 3.4 Explicit Auto-Increment Sequence Synchronization
+- **Decision**: After seeding users with fixed IDs (1–3), run `SELECT setval(pg_get_serial_sequence('users', 'id'), COALESCE(MAX(id), 1))` to advance PostgreSQL's sequence.
+- **Why**: Explicit primary key insertion does not automatically advance sequences in PostgreSQL; advancing it prevents PK collisions on future auto-generated inserts.
+
+### 3.5 Prisma `@updatedAt` Semantics
+- **Documented Reality**: `@updatedAt` is maintained by the Prisma Client query engine at the application layer when issuing `update`/`upsert` calls. Arbitrary raw SQL queries do not update this timestamp unless explicitly set.
+
+### 3.6 Test Database Isolation Strategy
+- **Decision**: Physical separation into `wayfarer` (development) and `wayfarer_test` (tests) with pre-connection and runtime assertions.
+- **Why**: Tests truncate tables. A mandatory `TEST_DATABASE_URL` checked before connection and runtime verification of `SELECT current_database()` completely prevents developer data loss.
+
+
