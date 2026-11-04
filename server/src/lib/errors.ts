@@ -30,3 +30,9 @@ export class UnauthorizedError extends AppError {
     super(401, code, message);
   }
 }
+
+export class ConflictError extends AppError {
+  constructor(code: 'SLOT_FULL' | 'NOT_ENOUGH_SEATS', message: string, details?: unknown) {
+    super(409, code, message, details);
+  }
+}
