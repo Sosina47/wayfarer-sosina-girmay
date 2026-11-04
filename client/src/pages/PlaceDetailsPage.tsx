@@ -8,7 +8,7 @@ import { PlaceImage } from '../components/PlaceImage.js';
 import { RatingSummary } from '../components/RatingSummary.js';
 import { ReviewForm } from '../components/ReviewForm.js';
 import { ReviewList } from '../components/ReviewList.js';
-import { TourSlotsPreview } from '../components/TourSlotsPreview.js';
+import { TourSlotList } from '../components/TourSlotList.js';
 
 export const PlaceDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -154,10 +154,13 @@ export const PlaceDetailsPage: React.FC = () => {
               </section>
             </div>
 
-            {/* Sidebar Column: Tour Slots Preview (Only if tours exist) */}
+            {/* Sidebar Column: Tour Slot List (Only if tours exist) */}
             {data.tourSlots.length > 0 && (
               <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
-                <TourSlotsPreview slots={data.tourSlots} />
+                <TourSlotList
+                  slots={data.tourSlots}
+                  onBookingSuccess={reload}
+                />
               </div>
             )}
           </div>

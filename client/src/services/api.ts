@@ -1,4 +1,5 @@
 import {
+  BookingResponse,
   CategoriesResponse,
   PlaceDetailsResponse,
   PlacesResponse,
@@ -106,5 +107,15 @@ export async function saveReview(
   return request<ReviewResponse>(`/api/places/${placeId}/review`, {
     method: 'PUT',
     body: JSON.stringify(payload)
+  });
+}
+
+export async function bookSeats(
+  slotId: number | string,
+  seats: number
+): Promise<BookingResponse> {
+  return request<BookingResponse>(`/api/slots/${slotId}/bookings`, {
+    method: 'POST',
+    body: JSON.stringify({ seats })
   });
 }
