@@ -51,4 +51,38 @@ This document transparently records the use of AI tools during the development o
 - **Fix**: Retained the original development database URL in `DEV_DATABASE_URL` so that `globalSetup.ts` can reliably assert separation before worker process environment overrides occur.
 - **Evidence**: Executed `npm test -w server` (all 14 tests passed on `wayfarer_test`), followed by auditing `wayfarer` development database row counts (`users: 3, places: 10, reviews: 23, slots: 5, bookings: 6`), proving zero data loss or test leakage.
 
+---
+
+## 4. Slice 2: Place Discovery & Bayesian Ranking
+
+### 4.1 Clarifications & Design Decisions
+- **Query Parameter Contract**: User clarified and mandated `sort=top-rated` and `sort=name`, with default `top-rated`. Handled invalid parameters like `sort=top` with explicit HTTP 400 `VALIDATION_ERROR`.
+- **Global Prior Category Invariance**: User required that filtering by category (`?category=History`) must not recalculate the Bayesian prior $C$ from only the filtered subset. $C$ is computed across the entire review corpus in the system ($C = \text{global average rating}$, fallback $3.0$ if no reviews globally), guaranteeing that an attraction's Bayesian ranking score remains identical regardless of UI category filters applied.
+- **Integration Test Isolation**: Tests in `server/tests/integration/places.test.ts` were built self-contained, creating predictable fixtures and cleaning them up so that test order does not bleed state. The zero-reviews fallback test explicitly operates within its own isolated fixture lifecycle.
+- **Deterministic Tie-Breaking**: When two places calculate the identical Bayesian ranking score, ordering deterministically falls back to review count descending, then place name alphabetically ascending.
+
+### 4.2 Implementation Summary
+- **Backend Core**:
+  - `server/src/lib/ranking.ts`: Pure Bayesian formula $\text{score} = \left(\frac{v}{v + m}\right) \cdot R + \left(\frac{m}{v + m}\right) \cdot C$ where $m=10$.
+  - `server/tests/unit/ranking.test.ts`: 11 unit tests covering edge cases (zero reviews, single 5-star review vs. many 4.5 reviews, global fallback, mathematical limits, tie-breakers).
+  - `server/src/lib/errors.ts` & `server/src/middleware/errorHandler.ts`: Standardized error hierarchy and Express 5 error handling.
+  - `server/src/lib/validation.ts`: Parsing and validation helpers for sorting and category filtering.
+  - `server/src/services/placeService.ts` & `server/src/controllers/placeController.ts`: Aggregate query executing a single global average query and a grouped aggregation for places, computing scores and applying sorting.
+  - `server/tests/integration/places.test.ts`: 8 integration tests against `wayfarer_test`.
+- **Frontend Core**:
+  - `client/src/types/index.ts`, `client/src/services/api.ts`, `client/src/hooks/useApi.ts`: Type definitions and declarative API hook.
+  - `client/src/components/*`: `AppHeader`, `CategoryFilter`, `SortSelect`, `PlaceCard`, `PlaceImage` (with 3:2 aspect ratio preservation and SVG placeholder), and `StatusMessage` (with loading skeletons, empty state, and error handling).
+  - `client/src/pages/ExplorePage.tsx` & `client/src/App.tsx`: Main discovery view integrating filters, sort dropdown, and grid layout.
+
+### 4.3 Verification Results
+- **Unit & Integration Tests**: 33 tests passing (`npm test -w server`).
+- **Type Checking & Build**: `npm run typecheck` returned 0 errors across client and server; `npm run build` completed successfully.
+- **Dev Database Integrity**: Verified that `wayfarer` development database remained pristine (`users: 3, places: 10, reviews: 23, slots: 5, bookings: 6`).
+- **Live Endpoint Verification**: Queried live server on port 3001 using curl:
+  - Default `GET /api/places`: Highest score was *Oceanário de Lisboa* (score 4.673, 5 reviews, avg 4.80), ahead of *Pastéis de Belém* (1 review, avg 5.0, score 3.962).
+  - Sorting `GET /api/places?sort=name`: Returned alphabetical ordering starting with *Castelo de São Jorge*.
+  - Category `GET /api/places?category=History`: Returned 2 historical landmarks with scores identical to the unfiltered endpoint.
+  - Error `GET /api/places?sort=invalid`: Returned 400 `VALIDATION_ERROR`.
+
+
 
