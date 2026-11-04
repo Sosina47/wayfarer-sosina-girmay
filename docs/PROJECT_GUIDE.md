@@ -161,3 +161,32 @@ Pure calculation in `server/src/lib/ranking.ts`:
 - `CurrentUserContext`: Restores acting user from `localStorage`, provides user state, and configures `api.ts` to attach `X-User-Id` to all API requests. Changing user immediately re-renders active pages.
 - `UserSwitcher`: Accessible `<select>` dropdown in `AppHeader` to switch between Ana, Bruno, and Carla.
 - `PlaceDetailsPage` (`/places/:id`): Hero image/placeholder, address, hours, rating summary, tour slots preview, review form with character counter, and reviews list with `"You"` badges.
+
+---
+
+## 8. Tour Slots & Safe Booking (Slice 4)
+
+### 8.1 Booking API
+- `POST /api/slots/:slotId/bookings`
+- Header: `X-User-Id` (mandatory via `[attachUser, requireUser]`)
+- Body: `{ "seats": <integer 1-10> }`
+- Validation: Validated on the backend via `parseSeats` with constant `MAX_SEATS_PER_BOOKING = 10`. Requests for 11 seats return 400 `VALIDATION_ERROR` with `{ details: { maxSeats: 10 } }`.
+- Success: HTTP 201 with `{ booking: { id, slotId, seats, createdAt }, slot: { id, capacity, seatsLeft } }`.
+
+### 8.2 Safe Concurrency Architecture
+- Implemented in `server/src/services/bookingService.ts`.
+- Uses a conditional `UPDATE` inside `prisma.$transaction`:
+  ```sql
+  UPDATE tour_slots
+  SET booked_seats = booked_seats + $seats
+  WHERE id = $slotId
+    AND booked_seats + $seats <= capacity;
+  ```
+- If 0 rows updated, inspects slot state and returns 404 `NOT_FOUND`, 409 `SLOT_FULL` (`{ seatsLeft: 0 }`), or 409 `NOT_ENOUGH_SEATS` (`{ seatsLeft: n }`).
+- If 1 row updated, inserts `Booking` record in the same transaction.
+
+### 8.3 Frontend Tour Slot List
+- `TourSlotList`: Interactive booking panel on Place Details page.
+- Selects 1 up to `min(seatsLeft, 10)` seats.
+- Disables submit during pending requests to prevent double-clicks.
+- Friendly messages on 409 conflicts: `"Sorry, this tour just filled up"` or `"Only N seats are left now. Pick a smaller group."` with immediate auto-reload.

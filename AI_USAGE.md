@@ -105,3 +105,16 @@ This document transparently records the use of AI tools during the development o
 - **Review & Detail Tests**: 16 dedicated integration tests in `tests/integration/reviews.test.ts` on `wayfarer_test`.
 - **Database Safeguard**: Development database `wayfarer` audited before and after test execution (`users: 3, places: 10, reviews: 23, slots: 5, bookings: 6`).
 - **Frontend Verification**: TypeScript passed (`npm run typecheck`) and Vite production build passed (`npm run build`).
+
+---
+
+## 6. Slice 4: Tour Slots & Safe Booking
+
+### 6.1 Concurrency Bug Reproduction & Atomic Fix
+- **Failing-Before Evidence**: Implemented a deliberate naive read-then-insert endpoint in `bookingService.ts`. Ran the 20-request parallel test (`Scenario A`), which triggered a race condition: multiple concurrent requests passed the application-level capacity check and attempted to increment `booked_seats` to 11 (exceeding capacity 10). PostgreSQL's check constraint `tour_slots_booked_within_capacity` halted the transaction with error code `23514`, causing 2 unhandled HTTP 500 errors and violating the test expectation of zero 500s.
+- **Passing-After Fix**: Refactored `bookingService.bookSeats` to use a single conditional parameterized `UPDATE` statement inside `prisma.$transaction`. PostgreSQL row-level locks serialized concurrent requests on the slot row, ensuring that each subsequent request re-evaluates `booked_seats + seats <= capacity` against the latest committed state.
+- **Result**: Exactly 2 requests succeeded (201), 18 requests returned 409 `SLOT_FULL`, 0 requests returned 500, and `assertSlotConsistent` passed across 5 consecutive runs.
+
+### 6.2 Frontend Booking UI & Error Handling
+- Built `TourSlotList.tsx` with row-level state management, interactive seat selection (capped at `min(seatsLeft, 10)`), pending state submission prevention, and friendly messaging on `SLOT_FULL` and `NOT_ENOUGH_SEATS` conflicts.
+- Verified TypeScript checks and production builds without errors.
