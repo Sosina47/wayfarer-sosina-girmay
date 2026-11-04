@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Place } from '../types/index.js';
 import { PlaceImage } from './PlaceImage.js';
 
@@ -8,7 +9,10 @@ interface PlaceCardProps {
 
 export const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
   return (
-    <article className="group flex flex-col rounded-[6px] bg-[#25201C] border border-[#3A332C] hover:border-[#D9694A] transition-colors duration-150 overflow-hidden shadow-sm">
+    <Link
+      to={`/places/${place.id}`}
+      className="group flex flex-col rounded-[6px] bg-[#25201C] border border-[#3A332C] hover:border-[#D9694A] transition-colors duration-150 overflow-hidden shadow-sm focus:outline-none focus:ring-2 focus:ring-[#D9694A]"
+    >
       <PlaceImage
         src={place.imageUrl}
         alt={place.name}
@@ -48,6 +52,6 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
           )}
         </div>
       </div>
-    </article>
+    </Link>
   );
 };
