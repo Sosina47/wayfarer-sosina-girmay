@@ -93,24 +93,24 @@ const TourSlotRow: React.FC<TourSlotRowProps> = ({ slot, onBookingSuccess }) => 
   };
 
   return (
-    <div className="p-3.5 rounded bg-[#1D1916] border border-[#3A332C] space-y-2.5 transition-colors">
+    <div className="p-3.5 rounded bg-[#101012] border border-[#303136] space-y-2.5 transition-colors">
       <div className="flex items-center justify-between gap-3 text-xs">
         <div>
-          <span className="font-semibold text-[#F3EBDD] block text-sm">
+          <span className="font-semibold text-[#E8E8ED] block text-sm">
             {formattedTime}
           </span>
-          <span className="text-[#8F8374] text-[11px]">
+          <span className="text-[#A5A5B0] text-[11px]">
             Capacity: {slot.capacity} seats
           </span>
         </div>
 
         <div className="text-right">
           {seatsLeft === 0 ? (
-            <span className="text-[#8F8374] font-medium px-2 py-0.5 rounded bg-[#25201C] border border-[#3A332C]">
+            <span className="text-[#A5A5B0] font-medium px-2 py-0.5 rounded bg-[#191A1D] border border-[#303136]">
               Fully booked
             </span>
           ) : seatsLeft <= 3 ? (
-            <span className="text-[#D9694A] font-semibold">
+            <span className="text-[#8C86E8] font-semibold">
               Only {seatsLeft} {seatsLeft === 1 ? 'seat' : 'seats'} left
             </span>
           ) : (
@@ -124,7 +124,7 @@ const TourSlotRow: React.FC<TourSlotRowProps> = ({ slot, onBookingSuccess }) => 
       {/* Booking Form Controls */}
       {seatsLeft > 0 ? (
         <form onSubmit={handleBook} className="pt-1 flex items-center justify-end gap-2">
-          <label htmlFor={`seats-select-${slot.id}`} className="text-xs text-[#8F8374]">
+          <label htmlFor={`seats-select-${slot.id}`} className="text-xs text-[#A5A5B0]">
             Seats:
           </label>
           <select
@@ -137,7 +137,7 @@ const TourSlotRow: React.FC<TourSlotRowProps> = ({ slot, onBookingSuccess }) => 
               setSuccessMessage(null);
             }}
             disabled={isBooking}
-            className="bg-[#25201C] text-[#F3EBDD] text-xs font-medium px-2 py-1 rounded border border-[#3A332C] focus:outline-none focus:ring-1 focus:ring-[#D9694A] cursor-pointer"
+            className="bg-[#191A1D] text-[#E8E8ED] text-xs font-medium px-2 py-1 rounded border border-[#303136] focus:outline-none focus:ring-1 focus:ring-[#A6A1F5] cursor-pointer"
           >
             {Array.from({ length: maxSelectable }, (_, i) => i + 1).map(num => (
               <option key={num} value={num}>
@@ -149,7 +149,7 @@ const TourSlotRow: React.FC<TourSlotRowProps> = ({ slot, onBookingSuccess }) => 
           <button
             type="submit"
             disabled={isBooking}
-            className="px-3 py-1 rounded text-xs font-semibold bg-[#D9694A] text-[#1D1916] hover:bg-[#E07D62] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-3 py-1 rounded text-xs font-semibold bg-[#A6A1F5] text-[#101012] hover:bg-[#B8B4F8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isBooking ? 'Booking…' : 'Book'}
           </button>
@@ -159,7 +159,7 @@ const TourSlotRow: React.FC<TourSlotRowProps> = ({ slot, onBookingSuccess }) => 
           <button
             type="button"
             disabled
-            className="px-3 py-1 rounded text-xs font-semibold bg-[#25201C] text-[#8F8374] border border-[#3A332C] cursor-not-allowed"
+            className="px-3 py-1 rounded text-xs font-semibold bg-[#191A1D] text-[#A5A5B0] border border-[#303136] cursor-not-allowed"
           >
             Full
           </button>
@@ -189,15 +189,15 @@ export const TourSlotList: React.FC<TourSlotListProps> = ({ slots, onBookingSucc
   }
 
   return (
-    <div className="p-5 rounded-[6px] bg-[#25201C] border border-[#3A332C] space-y-4 shadow-sm">
-      <div className="flex items-center justify-between border-b border-[#3A332C] pb-3">
+    <div className="p-5 rounded-[6px] bg-[#191A1D] border border-[#303136] space-y-4 shadow-sm">
+      <div className="flex items-center justify-between border-b border-[#303136] pb-3">
         <div>
-          <h3 className="text-base font-semibold text-[#F3EBDD]">Guided Tours</h3>
-          <p className="text-xs text-[#8F8374] mt-0.5">
+          <h3 className="text-base font-semibold text-[#E8E8ED] font-serif">Guided Tours</h3>
+          <p className="text-xs text-[#A5A5B0] mt-0.5">
             Instant booking with real-time capacity
           </p>
         </div>
-        <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-[#2E2822] border border-[#3A332C] text-[#9BAE7F]">
+        <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-[#101012] border border-[#303136] text-[#8C86E8]">
           {slots.length} {slots.length === 1 ? 'slot' : 'slots'}
         </span>
       </div>

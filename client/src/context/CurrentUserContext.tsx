@@ -62,9 +62,9 @@ export const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   if (isLoadingUsers) {
     return (
-      <div className="min-h-screen bg-[#1D1916] flex items-center justify-center">
-        <div className="flex items-center gap-3 text-[#B8A99A]">
-          <div className="w-5 h-5 border-2 border-[#D9694A] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#101012] flex items-center justify-center">
+        <div className="flex items-center gap-3 text-[#A5A5B0]">
+          <div className="w-5 h-5 border-2 border-[#A6A1F5] border-t-transparent rounded-full animate-spin" />
           <span className="text-sm">Initializing Wayfarer session…</span>
         </div>
       </div>

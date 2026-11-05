@@ -25,22 +25,22 @@ export const ExplorePage: React.FC = () => {
   const placesApi = useApi(fetchPlaces, [fetchPlaces]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#161311] text-[#F3EBDD]">
+    <div className="min-h-screen flex flex-col bg-[#101012] text-[#E8E8ED]">
       <AppHeader />
 
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8">
         {/* Compact Heading Band */}
         <section className="mb-8">
-          <h1 className="text-3xl font-semibold tracking-tight text-[#F3EBDD]">
+          <h1 className="text-3xl font-semibold tracking-tight text-[#E8E8ED] font-serif">
             Explore Lisbon
           </h1>
-          <p className="text-sm text-[#C9BDAA] mt-1">
+          <p className="text-sm text-[#A5A5B0] mt-1">
             Honest ratings, fair bookings.
           </p>
         </section>
 
         {/* Controls Row: Category Filter on left, Sort on right */}
-        <section className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-6 mb-8 border-b border-[#3A332C]">
+        <section className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-6 mb-8 border-b border-[#303136]">
           <CategoryFilter
             categories={categoriesApi.data?.categories || []}
             selectedCategory={selectedCategory}
@@ -82,8 +82,8 @@ export const ExplorePage: React.FC = () => {
         </section>
 
         {/* Synthetic Demonstration Data Notice (RV-8) */}
-        <footer className="mt-16 pt-6 border-t border-[#3A332C] text-center">
-          <p className="text-xs text-[#8F8374]">
+        <footer className="mt-16 pt-6 border-t border-[#303136] text-center">
+          <p className="text-xs text-[#A5A5B0]">
             Reviews in this demo are synthetic demonstration data.
           </p>
         </footer>

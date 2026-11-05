@@ -1,22 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #161311;
-  --color-bg-alt: #1D1916;
-  --color-surface: #25201C;
-  --color-surface-raised: #302A25;
-  --color-text: #F3EBDD;
-  --color-text-secondary: #C9BDAA;
-  --color-text-muted: #8F8374;
-  --color-accent: #D9694A;
-  --color-accent-hover: #E27B5E;
-  --color-on-accent: #161311;
-  --color-sage: #9BAE7F;
-  --color-border: #3A332C;
+  --color-bg: #101012;
+  --color-bg-navy: #191A2B;
+  --color-surface: #191A1D;
+  --color-accent: #8C86E8;
+  --color-accent-bright: #A6A1F5;
+  --color-accent-hover: #B8B4F8;
+  --color-star: #F5B544;
+  --color-on-accent: #101012;
+  --color-text: #E8E8ED;
+  --color-text-secondary: #A5A5B0;
+  --color-border: #303136;
   --color-success: #9BAE7F;
   --color-error: #E5707E;
 
-  --font-sans: Figtree, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: Manrope, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-heading: "Cormorant Garamond", Georgia, serif;
 }
 
 body {
@@ -25,3 +26,6 @@ body {
   font-family: var(--font-sans);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
