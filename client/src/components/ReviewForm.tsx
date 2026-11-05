@@ -74,14 +74,14 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-5 rounded-[6px] bg-[#25201C] border border-[#3A332C] space-y-4"
+      className="p-5 rounded-[6px] bg-[#30241D] border border-[#49372A] space-y-4"
     >
       <div className="flex items-center justify-between">
-        <h3 className="text-base font-semibold text-[#F3EBDD]">
+        <h3 className="text-base font-semibold text-[#E8DDC9] font-serif">
           {existingReview ? 'Your review' : 'Write a review'}
         </h3>
         {existingReview && (
-          <span className="text-xs px-2 py-0.5 rounded bg-[#2E2822] border border-[#3A332C] text-[#8F8374]">
+          <span className="text-xs px-2 py-0.5 rounded bg-[#171512] border border-[#49372A] text-[#A99B89]">
             Editing existing review
           </span>
         )}
@@ -89,7 +89,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
 
       {/* Star Rating Picker */}
       <div>
-        <label className="block text-xs font-medium text-[#C9BDAA] mb-1.5">
+        <label className="block text-xs font-medium text-[#A99B89] mb-1.5">
           Rating
         </label>
         <div
@@ -110,18 +110,18 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               }}
               onMouseEnter={() => setHoveredRating(star)}
               onMouseLeave={() => setHoveredRating(null)}
-              className="text-2xl p-1 focus:outline-none focus:ring-1 focus:ring-[#D9694A] rounded transition-transform hover:scale-110"
+              className="text-2xl p-1 focus:outline-none focus:ring-1 focus:ring-[#B17A43] rounded transition-transform hover:scale-110"
             >
               <span
                 className={
-                  star <= activeStars ? 'text-[#D9694A]' : 'text-[#544A3F]'
+                  star <= activeStars ? 'text-[#B17A43]' : 'text-[#49372A]'
                 }
               >
                 ★
               </span>
             </button>
           ))}
-          <span className="ml-2 text-xs text-[#8F8374]">
+          <span className="ml-2 text-xs text-[#A99B89]">
             {rating} of 5 stars
           </span>
         </div>
@@ -130,12 +130,12 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
       {/* Review Textarea */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label htmlFor="review-body" className="block text-xs font-medium text-[#C9BDAA]">
+          <label htmlFor="review-body" className="block text-xs font-medium text-[#A99B89]">
             Review
           </label>
           <span
             className={`text-xs ${
-              body.trim().length > 500 ? 'text-[#D9694A] font-semibold' : 'text-[#8F8374]'
+              body.trim().length > 500 ? 'text-[#B17A43] font-semibold' : 'text-[#A99B89]'
             }`}
           >
             {body.trim().length} / 500
@@ -151,7 +151,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             setSuccessMessage(null);
           }}
           placeholder="Share your experience (highlights, tips, atmosphere)…"
-          className="w-full bg-[#1D1916] text-[#F3EBDD] text-sm rounded border border-[#3A332C] p-3 focus:outline-none focus:ring-1 focus:ring-[#D9694A] focus:border-[#D9694A] placeholder-[#544A3F] transition-colors resize-y"
+          className="w-full bg-[#171512] text-[#E8DDC9] text-sm rounded border border-[#49372A] p-3 focus:outline-none focus:ring-1 focus:ring-[#B17A43] focus:border-[#B17A43] placeholder-[#A99B89]/40 transition-colors resize-y"
         />
       </div>
 
@@ -174,7 +174,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 rounded text-xs font-semibold bg-[#D9694A] text-[#1D1916] hover:bg-[#E07D62] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 rounded text-xs font-semibold bg-[#B17A43] text-[#171512] hover:bg-[#C58B50] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isSubmitting
             ? 'Saving…'

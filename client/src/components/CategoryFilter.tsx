@@ -19,10 +19,10 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
         type="button"
         disabled={disabled}
         onClick={() => onSelectCategory(undefined)}
-        className={`px-3 py-1.5 text-xs font-semibold rounded-[6px] transition-colors border focus:outline-none focus:ring-2 focus:ring-[#D9694A] ${
+        className={`px-3 py-1.5 text-xs font-semibold rounded-[6px] transition-colors border focus:outline-none focus:ring-2 focus:ring-[#B17A43] ${
           !selectedCategory
-            ? 'bg-[#302A25] border-[#D9694A] text-[#F3EBDD]'
-            : 'bg-[#25201C] border-[#3A332C] text-[#C9BDAA] hover:bg-[#302A25] hover:text-[#F3EBDD]'
+            ? 'bg-[#30241D] border-[#B17A43] text-[#E8DDC9] shadow-sm'
+            : 'bg-[#30241D] border-[#49372A] text-[#A99B89] hover:border-[#76502F] hover:text-[#E8DDC9]'
         }`}
       >
         All Places
@@ -36,10 +36,10 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
             type="button"
             disabled={disabled}
             onClick={() => onSelectCategory(isSelected ? undefined : category)}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-[6px] transition-colors border focus:outline-none focus:ring-2 focus:ring-[#D9694A] ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-[6px] transition-colors border focus:outline-none focus:ring-2 focus:ring-[#B17A43] ${
               isSelected
-                ? 'bg-[#302A25] border-[#D9694A] text-[#F3EBDD]'
-                : 'bg-[#25201C] border-[#3A332C] text-[#C9BDAA] hover:bg-[#302A25] hover:text-[#F3EBDD]'
+                ? 'bg-[#30241D] border-[#B17A43] text-[#E8DDC9] shadow-sm'
+                : 'bg-[#30241D] border-[#49372A] text-[#A99B89] hover:border-[#76502F] hover:text-[#E8DDC9]'
             }`}
           >
             {category}

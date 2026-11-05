@@ -9,7 +9,7 @@ interface ReviewListProps {
 export const ReviewList: React.FC<ReviewListProps> = ({ reviews, currentUserId }) => {
   if (reviews.length === 0) {
     return (
-      <div className="p-6 rounded-[6px] bg-[#25201C] border border-[#3A332C] text-center text-[#8F8374] text-sm">
+      <div className="p-6 rounded-[6px] bg-[#30241D] border border-[#49372A] text-center text-[#A99B89] text-sm">
         No reviews yet. Be the first to share your experience!
       </div>
     );
@@ -29,33 +29,33 @@ export const ReviewList: React.FC<ReviewListProps> = ({ reviews, currentUserId }
           <div
             key={review.id}
             className={`p-4 rounded-[6px] border ${
-              isAuthor ? 'bg-[#29231E] border-[#D9694A]/40' : 'bg-[#25201C] border-[#3A332C]'
+              isAuthor ? 'bg-[#30241D] border-[#B17A43]/50' : 'bg-[#30241D] border-[#49372A]'
             } transition-colors`}
           >
             <div className="flex items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-[#F3EBDD]">
+                <span className="text-sm font-semibold text-[#E8DDC9]">
                   {review.user.name}
                 </span>
                 {isAuthor && (
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#D9694A]/20 text-[#D9694A] border border-[#D9694A]/30">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#B17A43]/20 text-[#B17A43] border border-[#B17A43]/30">
                     You
                   </span>
                 )}
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-[#D9694A]">
+                <span className="text-xs font-semibold text-[#B17A43]">
                   {'★'.repeat(review.rating)}
-                  <span className="text-[#544A3F]">{'★'.repeat(5 - review.rating)}</span>
+                  <span className="text-[#49372A]">{'★'.repeat(5 - review.rating)}</span>
                 </span>
-                <span className="text-xs text-[#8F8374]">
+                <span className="text-xs text-[#A99B89]">
                   · {formattedDate}
                 </span>
               </div>
             </div>
 
-            <p className="text-sm text-[#C9BDAA] leading-relaxed whitespace-pre-line">
+            <p className="text-sm text-[#A99B89] leading-relaxed whitespace-pre-line">
               {review.body}
             </p>
           </div>

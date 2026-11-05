@@ -18,7 +18,7 @@ export const UserSwitcher: React.FC = () => {
 
   return (
     <div className="flex items-center gap-2">
-      <label htmlFor="acting-user-select" className="text-xs text-[#8F8374] font-medium hidden sm:inline">
+      <label htmlFor="acting-user-select" className="text-xs text-[#A99B89] font-medium hidden sm:inline">
         Acting as:
       </label>
       <div className="relative">
@@ -27,7 +27,7 @@ export const UserSwitcher: React.FC = () => {
           aria-label="Select acting user identity"
           value={currentUser?.id ?? ''}
           onChange={handleChange}
-          className="appearance-none bg-[#25201C] text-[#F3EBDD] text-xs font-medium pl-3 pr-8 py-1.5 rounded border border-[#3A332C] hover:border-[#8F8374] focus:outline-none focus:ring-1 focus:ring-[#D9694A] cursor-pointer"
+          className="appearance-none bg-[#30241D] text-[#E8DDC9] text-xs font-medium pl-3 pr-8 py-1.5 rounded border border-[#49372A] hover:border-[#76502F] focus:outline-none focus:ring-1 focus:ring-[#B17A43] cursor-pointer"
         >
           {users.map(user => (
             <option key={user.id} value={user.id}>
@@ -35,7 +35,7 @@ export const UserSwitcher: React.FC = () => {
             </option>
           ))}
         </select>
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#8F8374]">
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#A99B89]">
           <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
             <path
               fillRule="evenodd"
