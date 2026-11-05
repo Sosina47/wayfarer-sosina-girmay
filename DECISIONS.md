@@ -136,3 +136,51 @@ The following table records the project assumptions established in Section 2.3 o
 
 ### 5.3 Review Validation & Normalization
 - **Decision**: Validate `rating` strictly as an integer in $[1, 5]$ (rejecting numeric strings and floats). Trim `body` before validation and persistence, enforcing length between 1 and 500 characters per SRS RV-1.
+
+---
+
+## 6. Tour Booking Concurrency, Atomic Strategy & Invariants (Slice 4)
+
+### 6.1 The Overbooking Race Condition in Naive Read-then-Write
+- **Vulnerability**: In standard `READ COMMITTED` isolation, if 20 concurrent requests arrive when 2 seats remain, multiple requests query `findUnique` simultaneously. Each reads `bookedSeats = 8`, concludes that seats are available, inserts a booking, and attempts to increment the counter.
+- **Empirical Evidence**: Running the concurrency test against the naive read-then-write implementation crashed PostgreSQL with:
+  `PostgresError { code: "23514", message: "new row for relation \"tour_slots\" violates check constraint \"tour_slots_booked_within_capacity\"", detail: "Failing row contains (10, 1, ..., 10, 11)" }`
+  This triggered HTTP 500 errors and broke the invariant `bookedSeats = SUM(Booking.seats)`.
+
+### 6.2 The Atomic Solution: Conditional SQL UPDATE in an Interactive Transaction
+- **Decision**: Execute a single parameterized conditional `UPDATE` statement inside `prisma.$transaction`:
+  ```sql
+  UPDATE tour_slots
+  SET booked_seats = booked_seats + $seats
+  WHERE id = $slotId
+    AND booked_seats + $seats <= capacity;
+  ```
+- **Why It Works**:
+  1. PostgreSQL takes an exclusive row-level lock on the `tour_slots` row for the duration of the transaction.
+  2. Concurrent updates on the same slot block and serialize.
+  3. Under `READ COMMITTED`, once the lock is released by a committing transaction, waiting transactions re-evaluate the `WHERE` condition against the newly updated committed row. If remaining capacity is insufficient, the condition fails.
+  4. If 0 rows are affected, the transaction reads the slot to return 404, 409 `SLOT_FULL`, or 409 `NOT_ENOUGH_SEATS` (`{ details: { seatsLeft } }`), and rolls back cleanly.
+  5. If 1 row is affected, the `Booking` record is inserted in the same transaction, guaranteeing that the counter increment and booking record commit together atomically.
+
+### 6.3 Explicit Transaction Timeouts
+- Explicit interactive transaction parameters:
+  - `maxWait: 5000`: Wait up to 5 seconds to acquire a connection from the Prisma connection pool under contention.
+  - `timeout: 10000`: Allow up to 10 seconds for the transactional callback to finish.
+
+### 6.4 Consistency Invariant
+- **Invariant**: `TourSlot.bookedSeats = SUM(Booking.seats)`.
+- Reusable test helper `assertSlotConsistent(prisma, slotId)` validates this invariant using a SQL query after every test scenario.
+
+### 6.5 Alternatives Considered & Rejected
+| Alternative | Why Considered | Why Rejected |
+|---|---|---|
+| `SELECT ... FOR UPDATE` + sum bookings + insert | Traditional pessimistic lock | Requires 3 round-trip queries while holding the lock across application code. |
+| `SERIALIZABLE` isolation + retry loop | Highest SQL isolation standard | Surfaces serialization failure errors (`40001`) to application code, requiring complex retry heuristics. |
+| Application-level In-Memory Mutex | Simple in single-thread Node.js | Completely ineffective across multiple Node.js worker processes or server instances. |
+| Advisory Locks (`pg_advisory_xact_lock`) | Explicit application-controlled locks | Obscure, easy to misconfigure, and unnecessary given row-level locks on the actual slot row. |
+| Prisma `updateMany` with `where: { bookedSeats: { lte: capacity - n } }` | ORM-only approach | Requires assuming `capacity` is static and known ahead of time. |
+
+### 6.6 Known Limitations
+- Counter and Booking records could drift if direct database modifications bypass this code path (guarded by the database CHECK constraint).
+- Booking cancellation and decrement paths are intentionally not implemented in this release.
+- High contention on a single slot serializes waiting requests by design.

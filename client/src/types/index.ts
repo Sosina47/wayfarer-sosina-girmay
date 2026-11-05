@@ -90,6 +90,20 @@ export interface ReviewResponse {
   };
 }
 
+export interface BookingResponse {
+  booking: {
+    id: number;
+    slotId: number;
+    seats: number;
+    createdAt: string;
+  };
+  slot: {
+    id: number;
+    capacity: number;
+    seatsLeft: number;
+  };
+}
+
 export interface ApiErrorPayload {
   code: string;
   message: string;

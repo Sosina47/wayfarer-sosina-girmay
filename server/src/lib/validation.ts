@@ -2,6 +2,8 @@ import { ValidationError } from './errors.js';
 
 export type SortOption = 'top-rated' | 'name';
 
+export const MAX_SEATS_PER_BOOKING = 10;
+
 /**
  * Validates and normalizes the sorting query parameter.
  * Defaults to 'top-rated' when omitted or empty.
@@ -87,4 +89,22 @@ export function parseReviewBody(val: unknown): string {
   }
 
   return trimmed;
+}
+
+/**
+ * Validates requested seats as an integer between 1 and MAX_SEATS_PER_BOOKING (10).
+ * Rejects 0, negatives, decimals, numeric strings, and counts exceeding 10.
+ */
+export function parseSeats(val: unknown): number {
+  if (typeof val !== 'number' || !Number.isInteger(val) || val <= 0) {
+    throw new ValidationError('Seats must be a positive integer between 1 and 10.');
+  }
+
+  if (val > MAX_SEATS_PER_BOOKING) {
+    throw new ValidationError('Cannot book more than 10 seats per booking.', {
+      maxSeats: MAX_SEATS_PER_BOOKING
+    });
+  }
+
+  return val;
 }
