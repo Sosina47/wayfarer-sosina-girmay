@@ -110,11 +110,11 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               }}
               onMouseEnter={() => setHoveredRating(star)}
               onMouseLeave={() => setHoveredRating(null)}
-              className="text-2xl p-1 focus:outline-none focus:ring-1 focus:ring-[#7770FF] rounded transition-transform hover:scale-110"
+              className="text-2xl p-1 focus:outline-none focus:ring-1 focus:ring-[#A6A1F5] rounded transition-transform hover:scale-110"
             >
               <span
                 className={
-                  star <= activeStars ? 'text-[#7770FF]' : 'text-[#303136]'
+                  star <= activeStars ? 'text-[#F5B544]' : 'text-[#303136]'
                 }
               >
                 ★
@@ -135,7 +135,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
           </label>
           <span
             className={`text-xs ${
-              body.trim().length > 500 ? 'text-[#7770FF] font-semibold' : 'text-[#A5A5B0]'
+              body.trim().length > 500 ? 'text-[#A6A1F5] font-semibold' : 'text-[#A5A5B0]'
             }`}
           >
             {body.trim().length} / 500
@@ -151,7 +151,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             setSuccessMessage(null);
           }}
           placeholder="Share your experience (highlights, tips, atmosphere)…"
-          className="w-full bg-[#101012] text-[#E8E8ED] text-sm rounded border border-[#303136] p-3 focus:outline-none focus:ring-1 focus:ring-[#7770FF] focus:border-[#7770FF] placeholder-[#A5A5B0]/40 transition-colors resize-y"
+          className="w-full bg-[#101012] text-[#E8E8ED] text-sm rounded border border-[#303136] p-3 focus:outline-none focus:ring-1 focus:ring-[#A6A1F5] focus:border-[#A6A1F5] placeholder-[#A5A5B0]/40 transition-colors resize-y"
         />
       </div>
 
@@ -174,7 +174,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 rounded text-xs font-semibold bg-[#7770FF] text-[#101012] hover:bg-[#8A84FF] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 rounded text-xs font-semibold bg-[#A6A1F5] text-[#101012] hover:bg-[#B8B4F8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isSubmitting
             ? 'Saving…'

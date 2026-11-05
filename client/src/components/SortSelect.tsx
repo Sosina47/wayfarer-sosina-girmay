@@ -20,7 +20,7 @@ export const SortSelect: React.FC<SortSelectProps> = ({ value, onChange, disable
           value={value}
           disabled={disabled}
           onChange={e => onChange(e.target.value as SortMode)}
-          className="bg-[#191A1D] text-[#E8E8ED] text-xs font-medium border border-[#303136] rounded-[6px] px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#7770FF] cursor-pointer"
+          className="bg-[#191A1D] text-[#E8E8ED] text-xs font-medium border border-[#303136] rounded-[6px] px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#A6A1F5] cursor-pointer"
         >
           <option value="top-rated">Top rated</option>
           <option value="name">Name (A–Z)</option>

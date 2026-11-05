@@ -11,7 +11,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
   return (
     <Link
       to={`/places/${place.id}`}
-      className="group flex flex-col rounded-[6px] bg-[#191A1D] border border-[#303136] hover:border-[#6558E8] transition-colors duration-150 overflow-hidden shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7770FF]"
+      className="group flex flex-col rounded-[6px] bg-[#191A1D] border border-[#303136] hover:border-[#8C86E8] transition-colors duration-150 overflow-hidden shadow-sm focus:outline-none focus:ring-2 focus:ring-[#A6A1F5]"
     >
       <PlaceImage
         src={place.imageUrl}
@@ -21,11 +21,11 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
 
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          <span className="text-[11px] uppercase tracking-wider text-[#6558E8] font-semibold block mb-1">
+          <span className="text-[11px] uppercase tracking-wider text-[#8C86E8] font-semibold block mb-1">
             {place.category}
           </span>
 
-          <h2 className="text-xl font-semibold text-[#E8E8ED] group-hover:text-[#7770FF] transition-colors line-clamp-1 font-serif">
+          <h2 className="text-xl font-semibold text-[#E8E8ED] group-hover:text-[#A6A1F5] transition-colors line-clamp-1 font-serif">
             {place.name}
           </h2>
 
@@ -37,7 +37,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
         <div className="mt-4 pt-3 border-t border-[#303136] flex items-center justify-between text-sm">
           {place.reviewCount > 0 && place.averageRating !== null ? (
             <div className="flex items-center gap-1.5">
-              <span className="text-[#7770FF] font-bold" aria-hidden="true">★</span>
+              <span className="text-[#F5B544] font-bold" aria-hidden="true">★</span>
               <span className="font-semibold text-[#E8E8ED]">
                 {place.averageRating.toFixed(1)}
               </span>

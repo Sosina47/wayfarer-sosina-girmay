@@ -22,7 +22,7 @@ export default function App() {
                   </p>
                   <Link
                     to="/"
-                    className="inline-block px-4 py-2 rounded text-xs font-semibold bg-[#7770FF] text-[#101012] hover:bg-[#8A84FF] transition-colors"
+                    className="inline-block px-4 py-2 rounded text-xs font-semibold bg-[#A6A1F5] text-[#101012] hover:bg-[#B8B4F8] transition-colors"
                   >
                     Return to Explore
                   </Link>

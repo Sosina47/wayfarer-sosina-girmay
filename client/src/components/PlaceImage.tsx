@@ -28,7 +28,7 @@ export const PlaceImage: React.FC<PlaceImageProps> = ({
         } ${className}`}
         aria-label={`${alt} placeholder`}
       >
-        <span className="text-[11px] uppercase tracking-widest text-[#6558E8] font-semibold">
+        <span className="text-[11px] uppercase tracking-widest text-[#8C86E8] font-semibold">
           {category}
         </span>
         <span className="text-xs text-[#A5A5B0] mt-1 line-clamp-1 max-w-[80%]">

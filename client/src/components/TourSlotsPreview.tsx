@@ -35,7 +35,7 @@ export const TourSlotsPreview: React.FC<TourSlotsPreviewProps> = ({ slots }) => 
             Upcoming departures · Read-only preview
           </p>
         </div>
-        <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-[#101012] border border-[#303136] text-[#7770FF]">
+        <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-[#101012] border border-[#303136] text-[#8C86E8]">
           {slots.length} {slots.length === 1 ? 'slot' : 'slots'}
         </span>
       </div>
@@ -59,7 +59,7 @@ export const TourSlotsPreview: React.FC<TourSlotsPreviewProps> = ({ slots }) => 
               {slot.seatsLeft === 0 ? (
                 <span className="text-[#A5A5B0] font-medium">Fully booked</span>
               ) : slot.seatsLeft <= 3 ? (
-                <span className="text-[#7770FF] font-semibold">
+                <span className="text-[#8C86E8] font-semibold">
                   Only {slot.seatsLeft} {slot.seatsLeft === 1 ? 'seat' : 'seats'} left
                 </span>
               ) : (

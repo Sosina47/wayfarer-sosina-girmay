@@ -27,7 +27,7 @@ export const UserSwitcher: React.FC = () => {
           aria-label="Select acting user identity"
           value={currentUser?.id ?? ''}
           onChange={handleChange}
-          className="appearance-none bg-[#191A1D] text-[#E8E8ED] text-xs font-medium pl-3 pr-8 py-1.5 rounded border border-[#303136] hover:border-[#6558E8] focus:outline-none focus:ring-1 focus:ring-[#7770FF] cursor-pointer"
+          className="appearance-none bg-[#191A1D] text-[#E8E8ED] text-xs font-medium pl-3 pr-8 py-1.5 rounded border border-[#303136] hover:border-[#8C86E8] focus:outline-none focus:ring-1 focus:ring-[#A6A1F5] cursor-pointer"
         >
           {users.map(user => (
             <option key={user.id} value={user.id}>

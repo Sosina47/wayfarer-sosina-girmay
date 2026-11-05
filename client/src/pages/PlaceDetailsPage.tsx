@@ -33,7 +33,7 @@ export const PlaceDetailsPage: React.FC = () => {
         <div className="mb-6">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#A5A5B0] hover:text-[#7770FF] transition-colors focus:outline-none focus:ring-1 focus:ring-[#7770FF] rounded px-1 py-0.5"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#A5A5B0] hover:text-[#A6A1F5] transition-colors focus:outline-none focus:ring-1 focus:ring-[#A6A1F5] rounded px-1 py-0.5"
           >
             ← Back to Explore
           </Link>
@@ -67,7 +67,7 @@ export const PlaceDetailsPage: React.FC = () => {
               {isNotFound ? (
                 <Link
                   to="/"
-                  className="px-4 py-2 rounded text-xs font-semibold bg-[#7770FF] text-[#101012] hover:bg-[#8A84FF] transition-colors"
+                  className="px-4 py-2 rounded text-xs font-semibold bg-[#A6A1F5] text-[#101012] hover:bg-[#B8B4F8] transition-colors"
                 >
                   Return to Explore
                 </Link>
@@ -75,7 +75,7 @@ export const PlaceDetailsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={reload}
-                  className="px-4 py-2 rounded text-xs font-semibold bg-[#7770FF] text-[#101012] hover:bg-[#8A84FF] transition-colors"
+                  className="px-4 py-2 rounded text-xs font-semibold bg-[#A6A1F5] text-[#101012] hover:bg-[#B8B4F8] transition-colors"
                 >
                   Try again
                 </button>
@@ -101,7 +101,7 @@ export const PlaceDetailsPage: React.FC = () => {
 
               {/* Title & Metadata */}
               <div className="space-y-3">
-                <span className="text-xs uppercase tracking-wider text-[#6558E8] font-semibold block">
+                <span className="text-xs uppercase tracking-wider text-[#8C86E8] font-semibold block">
                   {data.place.category}
                 </span>
 

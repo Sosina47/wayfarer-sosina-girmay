@@ -29,7 +29,7 @@ export const ReviewList: React.FC<ReviewListProps> = ({ reviews, currentUserId }
           <div
             key={review.id}
             className={`p-4 rounded-[6px] border ${
-              isAuthor ? 'bg-[#191A1D] border-[#6558E8]/60' : 'bg-[#191A1D] border-[#303136]'
+              isAuthor ? 'bg-[#191A1D] border-[#8C86E8]/60' : 'bg-[#191A1D] border-[#303136]'
             } transition-colors`}
           >
             <div className="flex items-center justify-between gap-2 mb-2">
@@ -38,14 +38,14 @@ export const ReviewList: React.FC<ReviewListProps> = ({ reviews, currentUserId }
                   {review.user.name}
                 </span>
                 {isAuthor && (
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#6558E8]/20 text-[#7770FF] border border-[#6558E8]/30">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#8C86E8]/20 text-[#8C86E8] border border-[#8C86E8]/30">
                     You
                   </span>
                 )}
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-[#7770FF]">
+                <span className="text-xs font-semibold text-[#F5B544]">
                   {'★'.repeat(review.rating)}
                   <span className="text-[#303136]">{'★'.repeat(5 - review.rating)}</span>
                 </span>

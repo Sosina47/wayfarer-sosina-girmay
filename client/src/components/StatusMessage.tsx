@@ -46,7 +46,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onResetCategory }) => {
         <button
           type="button"
           onClick={onResetCategory}
-          className="mt-6 px-4 py-2 bg-[#7770FF] hover:bg-[#8A84FF] text-[#101012] font-semibold text-xs rounded-[6px] transition-colors focus:outline-none focus:ring-2 focus:ring-[#7770FF]"
+          className="mt-6 px-4 py-2 bg-[#A6A1F5] hover:bg-[#B8B4F8] text-[#101012] font-semibold text-xs rounded-[6px] transition-colors focus:outline-none focus:ring-2 focus:ring-[#A6A1F5]"
         >
           Show all places
         </button>
@@ -73,7 +73,7 @@ export const ErrorPanel: React.FC<ErrorPanelProps> = ({ message, onRetry }) => {
       <button
         type="button"
         onClick={onRetry}
-        className="px-4 py-2 bg-[#101012] hover:bg-[#303136] text-[#E8E8ED] font-semibold text-xs rounded-[6px] border border-[#303136] transition-colors focus:outline-none focus:ring-2 focus:ring-[#7770FF]"
+        className="px-4 py-2 bg-[#101012] hover:bg-[#303136] text-[#E8E8ED] font-semibold text-xs rounded-[6px] border border-[#303136] transition-colors focus:outline-none focus:ring-2 focus:ring-[#A6A1F5]"
       >
         Try again
       </button>

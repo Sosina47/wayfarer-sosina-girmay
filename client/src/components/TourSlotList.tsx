@@ -110,7 +110,7 @@ const TourSlotRow: React.FC<TourSlotRowProps> = ({ slot, onBookingSuccess }) => 
               Fully booked
             </span>
           ) : seatsLeft <= 3 ? (
-            <span className="text-[#7770FF] font-semibold">
+            <span className="text-[#8C86E8] font-semibold">
               Only {seatsLeft} {seatsLeft === 1 ? 'seat' : 'seats'} left
             </span>
           ) : (
@@ -137,7 +137,7 @@ const TourSlotRow: React.FC<TourSlotRowProps> = ({ slot, onBookingSuccess }) => 
               setSuccessMessage(null);
             }}
             disabled={isBooking}
-            className="bg-[#191A1D] text-[#E8E8ED] text-xs font-medium px-2 py-1 rounded border border-[#303136] focus:outline-none focus:ring-1 focus:ring-[#7770FF] cursor-pointer"
+            className="bg-[#191A1D] text-[#E8E8ED] text-xs font-medium px-2 py-1 rounded border border-[#303136] focus:outline-none focus:ring-1 focus:ring-[#A6A1F5] cursor-pointer"
           >
             {Array.from({ length: maxSelectable }, (_, i) => i + 1).map(num => (
               <option key={num} value={num}>
@@ -149,7 +149,7 @@ const TourSlotRow: React.FC<TourSlotRowProps> = ({ slot, onBookingSuccess }) => 
           <button
             type="submit"
             disabled={isBooking}
-            className="px-3 py-1 rounded text-xs font-semibold bg-[#7770FF] text-[#101012] hover:bg-[#8A84FF] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-3 py-1 rounded text-xs font-semibold bg-[#A6A1F5] text-[#101012] hover:bg-[#B8B4F8] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isBooking ? 'Booking…' : 'Book'}
           </button>
@@ -197,7 +197,7 @@ export const TourSlotList: React.FC<TourSlotListProps> = ({ slots, onBookingSucc
             Instant booking with real-time capacity
           </p>
         </div>
-        <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-[#101012] border border-[#303136] text-[#7770FF]">
+        <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-[#101012] border border-[#303136] text-[#8C86E8]">
           {slots.length} {slots.length === 1 ? 'slot' : 'slots'}
         </span>
       </div>
