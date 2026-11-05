@@ -184,3 +184,15 @@ The following table records the project assumptions established in Section 2.3 o
 - Counter and Booking records could drift if direct database modifications bypass this code path (guarded by the database CHECK constraint).
 - Booking cancellation and decrement paths are intentionally not implemented in this release.
 - High contention on a single slot serializes waiting requests by design.
+
+---
+
+## 7. Integration, UX Polish & Error Handling (Slice 5)
+
+### 7.1 Photography & Placeholder Strategy
+- **Decision**: Retain the designed architectural placeholder in `PlaceImage` as the primary image presentation.
+- **Why**: As specified in Section 7.8, placeholders are a first-class designed state rather than an error condition. Retaining SVG/CSS placeholders eliminates licensing/copyright ambiguities, avoids external network dependencies, and guarantees that the application runs identically on fresh offline clones.
+- **Compact Hero Placeholder Band**: On `PlaceDetailsPage`, attractions without photos display a compact ~120px banner (`h-28 sm:h-32`), ensuring descriptions and booking panels remain visible above the fold without a large empty hero block.
+
+### 7.2 Sanitized Global Error Handling
+- **Decision**: Ensure unexpected errors caught by `errorHandler` log details server-side while returning a generic `{ error: { code: 'INTERNAL_ERROR', message: 'An unexpected internal error occurred.' } }` with HTTP 500, never leaking stack traces or internal query strings to clients.

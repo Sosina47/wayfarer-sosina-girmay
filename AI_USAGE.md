@@ -118,3 +118,35 @@ This document transparently records the use of AI tools during the development o
 ### 6.2 Frontend Booking UI & Error Handling
 - Built `TourSlotList.tsx` with row-level state management, interactive seat selection (capped at `min(seatsLeft, 10)`), pending state submission prevention, and friendly messaging on `SLOT_FULL` and `NOT_ENOUGH_SEATS` conflicts.
 - Verified TypeScript checks and production builds without errors.
+
+---
+
+## 7. Slice 5: Integration, UX Completion & Quality Assurance
+
+### 7.1 Backend Error Handling & Test Isolation
+- **Verification of API Error Shapes**: Added comprehensive automated tests in `server/tests/health.test.ts` verifying that:
+  - Unknown `/api/*` routes return 404 with structured JSON `{ error: { code: "NOT_FOUND", message: ... } }`.
+  - Non-API routes return 404 HTML/text as standard.
+  - Unhandled exceptions caught by Express 5 error handling return generic HTTP 500 `{ error: { code: "INTERNAL_ERROR", message: "An unexpected internal error occurred." } }` without exposing stack traces.
+- **End-to-End Automated User Journey**: Created `server/tests/integration/e2eJourney.test.ts` exercising the entire user lifecycle sequentially against `wayfarer_test`:
+  1. Explore places (`GET /api/places`).
+  2. Filter by category & sort by name (`GET /api/places?category=History&sort=name`).
+  3. Load place details (`GET /api/places/:id`).
+  4. Query seeded users (`GET /api/users`).
+  5. Submit new review as Bruno (`PUT /api/places/:id/review` with `X-User-Id: 2`).
+  6. Edit review as Bruno (`PUT /api/places/:id/review` with `X-User-Id: 2`).
+  7. Book seats as Bruno (`POST /api/slots/:id/bookings` with `X-User-Id: 2`).
+  8. Book remaining seats to capacity as Carla (`POST /api/slots/:id/bookings` with `X-User-Id: 3`).
+  9. Verify overbooking attempt rejected with 409 `SLOT_FULL`.
+  10. Return to explore and confirm updated review count, average rating, and Bayesian score.
+
+### 7.2 Photography Decision & Placeholder Refinement
+- **Timebox & Design Audit**: Conducted an explicit review of the photography policy in Section 7.8 of `DEVELOPMENT_PLAN.md`.
+- **Decision**: Maintained designed architectural placeholders rather than introducing external image files. Retaining SVG/CSS placeholders prevents license/copyright ambiguities, ensures zero external bandwidth overhead, and eliminates broken image links.
+- **Hero Placeholder Band**: Refined `PlaceImage.tsx` with a `variant="hero"` prop. For venues without photography, the hero renders a compact ~120px placeholder band (`h-28 sm:h-32`) with clean icon and gradient background, keeping address, hours, ratings, and booking options above the fold on mobile and desktop.
+
+### 7.3 Frontend UX & State Verification
+- Audited contrast ratios against WCAG AA standards (all text tokens exceed 4.5:1; headings exceed 15:1).
+- Confirmed responsive collapse at mobile (~390px) and tablet (~768px) breakpoints without horizontal scrolling.
+- Confirmed both synthetic-data notices are prominently displayed in the footer and review section.
+- Confirmed removal of any debugging logs, `alert()`, or `confirm()` invocations.

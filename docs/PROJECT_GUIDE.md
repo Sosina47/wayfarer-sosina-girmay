@@ -190,3 +190,28 @@ Pure calculation in `server/src/lib/ranking.ts`:
 - Selects 1 up to `min(seatsLeft, 10)` seats.
 - Disables submit during pending requests to prevent double-clicks.
 - Friendly messages on 409 conflicts: `"Sorry, this tour just filled up"` or `"Only N seats are left now. Pick a smaller group."` with immediate auto-reload.
+
+---
+
+## 9. Integration, UX Completion & Quality Assurance (Slice 5)
+
+### 9.1 Global Backend Error Standardization
+- **404 Route Catch-All**: Any unmatched route starting with `/api/` returns a 404 response adhering to the standard error contract:
+  ```json
+  {
+    "error": {
+      "code": "NOT_FOUND",
+      "message": "API endpoint not found: METHOD /api/..."
+    }
+  }
+  ```
+- **500 Sanitization**: Unexpected server errors caught by `errorHandler` log diagnostic details on the server while returning a sanitized JSON response `{ "error": { "code": "INTERNAL_ERROR", "message": "An unexpected internal error occurred." } }` without exposing stack traces or internals.
+
+### 9.2 UI State Resilience & Visual Polish
+- **Designed Hero & Card Placeholders**: `PlaceImage` handles null or missing images cleanly:
+  - Card grid: Preserves uniform 3:2 aspect ratio with category icon and muted background.
+  - Detail hero: For places without photos, renders a compact ~120px header band (`h-28 sm:h-32`) to keep key details, ratings, and booking panels above the fold.
+- **Race Condition & User-Switching Protection**: The `useApi` hook uses a request tracking ID to discard stale API responses when users switch rapidly.
+- **Responsive Layout**: Fluid flex and CSS grid containers collapse without horizontal scroll down to 390px (mobile) and 768px (tablet).
+- **Synthetic Data Notices**: Clear persistent notices inform users that review content and tour slot schedules are synthetic demonstration data.
+- **WCAG AA/AAA Contrast**: High-contrast slate color tokens ensure readability across light and dark backgrounds.
