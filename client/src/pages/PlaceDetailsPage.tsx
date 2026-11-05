@@ -42,7 +42,7 @@ export const PlaceDetailsPage: React.FC = () => {
         {/* Loading State */}
         {loading && (
           <div className="space-y-6 animate-pulse" aria-busy="true">
-            <div className="h-64 sm:h-80 bg-[#25201C] rounded-[6px] border border-[#3A332C]" />
+            <div className="h-48 sm:h-64 bg-[#25201C] rounded-[6px] border border-[#3A332C]" />
             <div className="space-y-3">
               <div className="h-4 w-24 bg-[#25201C] rounded" />
               <div className="h-8 w-64 bg-[#25201C] rounded" />
@@ -89,12 +89,13 @@ export const PlaceDetailsPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Main Content Column */}
             <div className={data.tourSlots.length > 0 ? 'lg:col-span-8 space-y-8' : 'lg:col-span-12 max-w-3xl space-y-8'}>
-              {/* Hero Image */}
-              <div className="rounded-[6px] overflow-hidden border border-[#3A332C] bg-[#25201C] max-h-80">
+              {/* Hero Image / Placeholder */}
+              <div className="rounded-[6px] overflow-hidden border border-[#3A332C] bg-[#25201C]">
                 <PlaceImage
                   src={data.place.imageUrl}
                   alt={data.place.name}
                   category={data.place.category}
+                  variant="hero"
                 />
               </div>
 
