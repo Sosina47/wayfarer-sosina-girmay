@@ -23,15 +23,15 @@ export const PlaceImage: React.FC<PlaceImageProps> = ({
 
     return (
       <div
-        className={`w-full select-none bg-[#30241D] border-b border-[#49372A] flex flex-col items-center justify-center p-4 text-center ${
+        className={`w-full select-none bg-[#191A1D] border-b border-[#303136] flex flex-col items-center justify-center p-4 text-center ${
           isHero ? 'h-28 sm:h-32' : 'aspect-[3/2]'
         } ${className}`}
         aria-label={`${alt} placeholder`}
       >
-        <span className="text-[11px] uppercase tracking-widest text-[#B17A43] font-semibold">
+        <span className="text-[11px] uppercase tracking-widest text-[#6558E8] font-semibold">
           {category}
         </span>
-        <span className="text-xs text-[#A99B89] mt-1 line-clamp-1 max-w-[80%]">
+        <span className="text-xs text-[#A5A5B0] mt-1 line-clamp-1 max-w-[80%]">
           {alt}
         </span>
       </div>
@@ -40,8 +40,8 @@ export const PlaceImage: React.FC<PlaceImageProps> = ({
 
   const containerClasses =
     variant === 'hero'
-      ? 'w-full max-h-80 overflow-hidden bg-[#30241D] border-b border-[#49372A]'
-      : 'w-full aspect-[3/2] overflow-hidden bg-[#30241D] border-b border-[#49372A]';
+      ? 'w-full max-h-80 overflow-hidden bg-[#191A1D] border-b border-[#303136]'
+      : 'w-full aspect-[3/2] overflow-hidden bg-[#191A1D] border-b border-[#303136]';
 
   return (
     <div className={`${containerClasses} ${className}`}>
