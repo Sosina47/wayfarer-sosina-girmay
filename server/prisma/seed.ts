@@ -86,7 +86,7 @@ async function main() {
         description: 'Magnificent 16th-century monastery and pinnacle of Manueline architecture in Belém.',
         address: 'Praça do Império 1400-206 Lisboa',
         openingHours: 'Tue–Sun 10:00–17:30',
-        imageUrl: null
+        imageUrl: '/images/places/jeronimos-monastery.jpg'
       },
       {
         id: 2,
@@ -95,7 +95,7 @@ async function main() {
         description: 'Fortified 16th-century tower on the Tagus estuary guarding Lisbon harbour.',
         address: 'Av. Brasília, 1400-038 Lisboa',
         openingHours: 'Tue–Sun 10:00–17:30',
-        imageUrl: null
+        imageUrl: '/images/places/belem-tower.jpg'
       },
       {
         id: 3,
@@ -104,7 +104,7 @@ async function main() {
         description: 'Lisbon’s oldest, most atmospheric quarter of steep alleys, tiled facades, and fado taverns.',
         address: 'Alfama, 1100 Lisboa',
         openingHours: 'Open all day',
-        imageUrl: null
+        imageUrl: '/images/places/alfama.jpg'
       },
       {
         id: 4,
@@ -113,7 +113,7 @@ async function main() {
         description: 'Former convent housing five centuries of exquisite decorative Portuguese azulejos.',
         address: 'R. Me. Deus 4, 1900-312 Lisboa',
         openingHours: 'Tue–Sun 10:00–18:00',
-        imageUrl: null
+        imageUrl: '/images/places/national-tile-museum.jpg'
       },
       {
         id: 5,
@@ -122,7 +122,7 @@ async function main() {
         description: 'Striking contemporary waterfront museum integrating art, architecture, and technology.',
         address: 'Av. Brasília 64, 1300-598 Lisboa',
         openingHours: 'Wed–Mon 10:00–19:00',
-        imageUrl: null
+        imageUrl: '/images/places/maat.jpg'
       },
       {
         id: 6,
@@ -131,7 +131,7 @@ async function main() {
         description: 'The highest natural terrace in the city offering sweeping vistas of the castle and Tagus.',
         address: 'Largo Monte, 1170-107 Lisboa',
         openingHours: 'Open all day',
-        imageUrl: null
+        imageUrl: '/images/places/senhora-do-monte.jpg'
       },
       {
         id: 7,
@@ -140,7 +140,7 @@ async function main() {
         description: 'Romantic terrace framed by bougainvillea and blue azulejos overlooking Alfama.',
         address: 'Largo Santa Luzia, 1100-487 Lisboa',
         openingHours: 'Open all day',
-        imageUrl: null
+        imageUrl: '/images/places/santa-luzia.jpg'
       },
       {
         id: 8,
@@ -149,7 +149,7 @@ async function main() {
         description: 'Lively food hall inside Mercado da Ribeira showcasing culinary creations from top Portuguese chefs.',
         address: 'Av. 24 de Julho 49, 1200-479 Lisboa',
         openingHours: 'Mon–Sun 10:00–00:00',
-        imageUrl: null
+        imageUrl: '/images/places/time-out-market.jpg'
       },
       {
         id: 9,
@@ -158,7 +158,7 @@ async function main() {
         description: 'Newly opened artisanal bakery serving warm pastéis de nata with crisp pastry and fresh cinnamon.',
         address: 'R. Nova do Carvalho 12, 1200-292 Lisboa',
         openingHours: 'Tue–Sun 08:00–19:00',
-        imageUrl: null
+        imageUrl: '/images/places/pastelaria-brilho.jpg'
       },
       {
         id: 10,
@@ -167,7 +167,7 @@ async function main() {
         description: 'Tranquil 19th-century public park famous for its sprawling centenary cedar tree.',
         address: 'Praça do Príncipe Real, 1250-096 Lisboa',
         openingHours: 'Open all day',
-        imageUrl: null
+        imageUrl: '/images/places/principe-real-garden.jpg'
       }
     ];
 
