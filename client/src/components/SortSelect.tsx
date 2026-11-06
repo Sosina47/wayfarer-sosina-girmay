@@ -26,12 +26,6 @@ export const SortSelect: React.FC<SortSelectProps> = ({ value, onChange, disable
           <option value="name">Name (A–Z)</option>
         </select>
       </div>
-
-      {value === 'top-rated' && (
-        <p className="text-[11px] text-[#A5A5B0] mt-1 text-right max-w-xs leading-tight">
-          {/* Ranked with review count in mind, so one 5★ review doesn't beat a well-reviewed favourite. */}
-        </p>
-      )}
     </div>
   );
 };
