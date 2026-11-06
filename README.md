@@ -86,7 +86,7 @@ Before setting up Wayfarer, ensure the following software is installed on your w
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Sosina47/wayfarer-sosina-girmay.git
 cd wayfarer-sosina-girmay
 ```
 
