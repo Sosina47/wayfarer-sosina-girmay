@@ -31,7 +31,8 @@ export const UserSwitcher: React.FC = () => {
         >
           {users.map(user => (
             <option key={user.id} value={user.id}>
-              {user.name} (ID: {user.id})
+              {user.name} 
+              {/* (ID: {user.id}) */}
             </option>
           ))}
         </select>

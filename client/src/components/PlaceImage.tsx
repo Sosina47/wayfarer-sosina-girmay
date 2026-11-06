@@ -38,10 +38,15 @@ export const PlaceImage: React.FC<PlaceImageProps> = ({
     );
   }
 
-  const containerClasses =
-    variant === 'hero'
-      ? 'w-full max-h-80 overflow-hidden bg-[#191A1D] border-b border-[#303136]'
-      : 'w-full aspect-[3/2] overflow-hidden bg-[#191A1D] border-b border-[#303136]';
+  const isHero = variant === 'hero';
+
+  const containerClasses = isHero
+    ? 'w-full max-h-[440px] sm:max-h-[480px] overflow-hidden bg-[#101012] flex items-center justify-center'
+    : 'w-full aspect-[3/2] overflow-hidden bg-[#191A1D] border-b border-[#303136]';
+
+  const imgClasses = isHero
+    ? 'max-h-[440px] sm:max-h-[480px] w-auto max-w-full h-auto object-contain'
+    : 'w-full h-full object-cover transition-transform duration-200 group-hover:scale-105';
 
   return (
     <div className={`${containerClasses} ${className}`}>
@@ -49,9 +54,7 @@ export const PlaceImage: React.FC<PlaceImageProps> = ({
         src={src}
         alt={alt}
         onError={() => setHasError(true)}
-        className={`w-full h-full object-cover transition-transform duration-200 ${
-          variant === 'card' ? 'group-hover:scale-105' : ''
-        }`}
+        className={imgClasses}
         loading="lazy"
       />
     </div>
